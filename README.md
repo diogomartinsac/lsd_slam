@@ -43,54 +43,23 @@ and one window showing the 3D map (from viewer). If for some reason the initiali
 
 
 # 2. Installation
-We tested LSD-SLAM on two different system configurations, using Ubuntu 12.04 (Precise) and ROS fuerte, or Ubuntu 14.04 (trusty) and ROS indigo. Note that building without ROS is not supported, however ROS is only used for input and output, facilitating easy portability to other platforms.
+The official repository (https://github.com/tum-vision/lsd_slam) only supports two different system configurations,  Ubuntu 12.04 (Precise) and ROS fuerte, or Ubuntu 14.04 (trusty) and ROS indigo. This repository was adapted to run under Ubuntu 18.04 (Bionic Beaver) and ROS Melodic Morenia.
 
 
-## 2.1 ROS fuerte + Ubuntu 12.04
+## 2.1 ROS Melodic Morenia + Ubuntu 18.04
 Install system dependencies:
 
-    sudo apt-get install ros-fuerte-libg2o liblapack-dev libblas-dev freeglut3-dev libqglviewer-qt4-dev libsuitesparse-dev libx11-dev
+    sudo apt install libsuitesparse-dev libqglviewer-dev-qt4 ros-melodic-libg2o ros-melodic-opencv3
+    sudo ln -s /usr/lib/x86_64-linux-gnu/libQGLViewer-qt4.so /usr/lib/x86_64-linux-gnu/libQGLViewer.so
+    sudo ln -s /usr/lib/x86_64-linux-gnu/libcxsparse.so.3.2.0 /usr/lib/x86_64-linux-gnu/libcsparse.so
 
 In your ROS package path, clone the repository:
 
-    git clone https://github.com/tum-vision/lsd_slam.git lsd_slam
+    git clone https://github.com/diogomartinsac/lsd_slam.git
 
 Compile the two package by typing:
 
-    rosmake lsd_slam
-
-
-
-
-## 2.2 ROS indigo + Ubuntu 14.04
-**We do not use catkin, however fortunately old-fashioned CMake-builds are still possible with ROS indigo.**
-For this you need to create a rosbuild workspace (if you don't have one yet), using:
-
-    sudo apt-get install python-rosinstall
-    mkdir ~/rosbuild_ws
-    cd ~/rosbuild_ws
-    rosws init . /opt/ros/indigo
-    mkdir package_dir
-    rosws set ~/rosbuild_ws/package_dir -t .
-    echo "source ~/rosbuild_ws/setup.bash" >> ~/.bashrc
-    bash
-    cd package_dir
-
-Install system dependencies:
-
-    sudo apt-get install ros-indigo-libg2o ros-indigo-cv-bridge liblapack-dev libblas-dev freeglut3-dev libqglviewer-dev libsuitesparse-dev libx11-dev
-
-In your ROS package path, clone the repository:
-
-    git clone https://github.com/tum-vision/lsd_slam.git lsd_slam
-
-Compile the two package by typing:
-
-    rosmake lsd_slam
-
-
-
-
+    catkin_make
 
 
 ## 2.3 openFabMap for large loop-closure detection [optional]
