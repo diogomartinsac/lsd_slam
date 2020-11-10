@@ -70,7 +70,7 @@ void displayThreadLoop()
 				}
 			}
 			cv::imshow(displayQueue.back().name, displayQueue.back().img);
-			cv::waitKey(1);
+			cv::waitKey(30);
 			displayQueue.pop_back();
 		}
 	}
