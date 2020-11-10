@@ -21,7 +21,10 @@ First, install LSD-SLAM following 2.1 or 2.2, depending on your Ubuntu / ROS ver
 
 Download the [Room Example Sequence](http://vmcremers8.informatik.tu-muenchen.de/lsd/LSD_room.bag.zip) and extract it.
 
+Launch the roscore:
 
+		roscore
+		
 Launch the lsd_slam viewer:
 
 		rosrun lsd_slam_viewer viewer
@@ -49,7 +52,7 @@ The official repository (https://github.com/tum-vision/lsd_slam) only supports t
 ## 2.1 ROS Melodic Morenia + Ubuntu 18.04
 Install system dependencies:
 
-    sudo apt install libsuitesparse-dev libqglviewer-dev-qt4 ros-melodic-libg2o ros-melodic-opencv3
+    sudo apt install libsuitesparse-dev libqglviewer-dev-qt4 ros-melodic-libg2o
     sudo ln -s /usr/lib/x86_64-linux-gnu/libQGLViewer-qt4.so /usr/lib/x86_64-linux-gnu/libQGLViewer.so
     sudo ln -s /usr/lib/x86_64-linux-gnu/libcxsparse.so.3.2.0 /usr/lib/x86_64-linux-gnu/libcsparse.so
 
