@@ -155,6 +155,9 @@ void ROSOutput3DWrapper::publishTrackedFrame(Frame* kf)
 	}
 
 	pMsg.header.stamp = ros::Time(kf->timestamp());
+	
+	///////// subtle change //////////////
+	pMsg.header.frame_id = (ros::param::get("~lsd_world_frame", pMsg.header.frame_id)) ? pMsg.header.frame_id : "lsd_world";
 	pMsg.header.frame_id = "world";
 	pose_publisher.publish(pMsg);
 }

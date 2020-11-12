@@ -34,6 +34,10 @@
 
 KeyFrameDisplay::KeyFrameDisplay()
 {
+	///////////--PCD publisher--//////////////
+	cloud_pub  = n.advertise<sensor_msgs::PointCloud>("pointcloud", 50);
+	cloud2_pub = n.advertise<sensor_msgs::PointCloud2>("pointcloud2", 50);
+	///////////--END--//////////////
 	originalInput = 0;
 	id = 0;
 	vertexBufferIdValid = false;
@@ -146,6 +150,17 @@ void KeyFrameDisplay::refreshPC()
 	// data is directly in ros message, in correct format.
 	vertexBufferNumPoints = 0;
 
+	///////////--PCD publisher--//////////////
+        
+	sensor_msgs::PointCloud cloud;
+        cloud.header.stamp = ros::Time(time);
+        cloud.header.frame_id = (ros::param::get("~PC_frame_id", cloud.header.frame_id)) ? cloud.header.frame_id : "lsd_world";
+	cloud.points.resize(height*width);
+
+	sensor_msgs::PointCloud2 cloud2;
+
+	///////////--END--//////////////
+
 	int total = 0, displayed = 0;
 	for(int y=1;y<height-1;y++)
 		for(int x=1;x<width-1;x++)
@@ -189,6 +204,15 @@ void KeyFrameDisplay::refreshPC()
 			tmpBuffer[vertexBufferNumPoints].point[1] = (y*fyi + cyi) * depth;
 			tmpBuffer[vertexBufferNumPoints].point[2] = depth;
 
+			///////////--PCD publisher--//////////////
+		
+			Sophus::Vector3f pt = camToWorld * (Sophus::Vector3f((x*fxi + cxi), (y*fyi + cyi), 1) * depth);			
+			cloud.points[total-1].x = pt[0];
+			cloud.points[total-1].y = pt[1];
+			cloud.points[total-1].z = pt[2];
+
+			///////////--END--//////////////
+
 			tmpBuffer[vertexBufferNumPoints].color[3] = 100;
 			tmpBuffer[vertexBufferNumPoints].color[2] = originalInput[x+y*width].color[0];
 			tmpBuffer[vertexBufferNumPoints].color[1] = originalInput[x+y*width].color[1];
@@ -199,6 +223,14 @@ void KeyFrameDisplay::refreshPC()
 		}
 	totalPoints = total;
 	displayedPoints = displayed;
+
+	///////////-- PCD&PCD2 publish!!! --//////////////
+
+	cloud_pub.publish(cloud);
+	convertPointCloudToPointCloud2(cloud,cloud2);	// Pointcloud2 in world
+	cloud2_pub.publish(cloud2);
+
+	///////////--END--//////////////
 
 	// create new ones, static
 	vertexBufferId=0;

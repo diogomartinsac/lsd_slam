@@ -30,6 +30,14 @@
 #include <sstream>
 #include <fstream>
 
+//////////////--include ros.h--//////////////
+#include <ros/ros.h>
+#include "std_msgs/String.h"
+#include <sensor_msgs/PointCloud2.h>
+#include <sensor_msgs/PointCloud.h>
+#include <sensor_msgs/point_cloud_conversion.h>
+#include <string>
+
 struct MyVertex
 {
 	float point[3];
@@ -97,6 +105,11 @@ private:
 	bool vertexBufferIdValid;	// true if the vertixBufferID is valid (doesnt mean the data in there is still valid)
 	bool glBuffersValid;		// true if the vertexBufferID contains valid data
 
+	//////////////--add PCD publisher--//////////////
+
+	ros::NodeHandle n; 
+	ros::Publisher cloud_pub;
+	ros::Publisher cloud2_pub;
 };
 
 
